@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本ブギウギメディカル - オンライン診療プラットフォーム</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ナビゲーション -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo-text">日本ブギウギメディカル株式会社</span>
+                <span class="logo-text-en">Boogie Woogie Medical Japan ,Inc</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Service</a></li>
+                <li><a href="#recruit">Recruit</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#contact" class="btn-nav-cta">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- スクロールトップボタン -->
+    <button class="scroll-top" id="scrollTop">
+        <span>Top</span>
+    </button>
+
+    <!-- ファーストビュー -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-image hero-image-sp">
+                    <div class="hero-image-wrapper">
+                        <img src="1.png" alt="Hero illustration" class="hero-image-content">
+                    </div>
+                </div>
+                <div class="hero-text">
+                    <h1 class="hero-title">正しい医療を、<br>もっと身近に。<br><span class="hero-title-line2">"続けられる"オンライン診療体験を、すべての人へ。</span></h1>
+                    <p class="hero-description">私たちが目指すのは、単に"薬を届ける"ことではありません。<br>一人ひとりの"選択"を支え、"変化"を続けられる。</p>
+                    <p class="hero-description">「病気になってから医療を受ける」社会を医療DXの力で変え、日本全体の医療の前進に貢献する——それが日本ブギウギメディカルのビジョンです。</p>
+                    <a href="#services" class="btn-circle">
+                        <span>サービスを見る</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="hero-image hero-image-pc">
+                    <div class="hero-image-wrapper">
+                        <img src="1.png" alt="Hero illustration" class="hero-image-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Aboutセクション -->
+    <section id="about" class="section section-about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title-en">ABOUT</h2>
+                <p class="section-subtitle">私たちについて</p>
+            </div>
+            <div class="about-vertical-content" id="aboutScrollSection">
+                <div class="about-vertical-text about-vertical-text-second">
+                    <div class="about-vertical-body">
+                        <p class="about-webcli-intro" data-step="4">日本ブギウギメディカルは、<br>医療DXとマーケティングの力によって、<br><span class="highlight-text highlight-target-2">医療を「受け身」から「主体」へと引き戻す。</span></p>
+                        <p data-step="4">なりたい自分から逆算する医療。<br>続けることを前提に設計された医療。<br>それが、日本ブギウギメディカルの考える「正しい医療」である。</p>
+                    </div>
+                </div>
+                <div class="about-vertical-text">
+                    <h3 class="about-vertical-title" data-step="1">日本の医療は、強い。<br>だが、人は弱くなる。</h3>
+                    <div class="about-vertical-body">
+                        <p data-step="2">日本ほど、平等に医療を受けられる国は他にない。<br>誰もが、いつでも、医療にアクセスできる。<br>それは間違いなく、誇るべき「強さ」である。</p>
+                        <p data-step="2">しかしその強さは同時に、<br>人から<span class="highlight-text highlight-target-1">「自分の健康を自分で考える習慣」</span>を奪ってきた側面も持つ。</p>
+                        <p data-step="2">体調が悪くなってから病院へ行く。<br>判断はすべて医師に委ねる。<br><span class="highlight-text highlight-target-1">健康は次第に、管理されるもの</span>へと変わってしまった</p>
+                        <p data-step="2">制度は盤石である。<br>だが、健康と向き合う意識は、静かに脆くなっている。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- サービスセクション -->
+    <section id="services" class="section section-services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title-en">SERVICE</h2>
+                <p class="section-subtitle">提供サービス</p>
+            </div>
+            <div class="services-list">
+                <!-- サービス1: 画像左、テキスト右 -->
+                <div class="service-item service-item-left">
+                    <div class="service-image">
+                        <div class="service-image-placeholder">
+                            <!-- PC/スマホモックアップのプレースホルダー -->
+                            <div class="service-mockup">
+                                <div class="mockup-desktop mockup-desktop-service1">
+                                    <div class="mockup-screen">
+                                        <img src="3.png" alt="オンライン診療プラットフォーム" class="mockup-image">
+                                    </div>
+                                </div>
+                                <div class="mockup-mobile mockup-mobile-service1">
+                                    <div class="mockup-screen">
+                                        <img src="2.PNG" alt="オンライン診療プラットフォーム モバイル" class="mockup-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-text">
+                        <h3>オンライン診療プラットフォーム<br>「ウェブクリ」</h3>
+                        <p>クリニックのオンライン診療を、患者さんが迷わず進められる形に整えます。案内設計・決済導線・継続のためのコミュニケーションまで、体験全体を最適化します。</p>
+                        <ul class="service-features">
+                            <li>予約〜案内〜決済までの導線設計</li>
+                            <li>継続を前提にした購入体験・コミュニケーション設計</li>
+                            <li>運用負荷を下げるオペレーション整備</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- サービス2: 画像右、テキスト左 -->
+                <div class="service-item service-item-right">
+                    <div class="service-image service-image-sp">
+                        <div class="service-image-placeholder">
+                            <!-- マーケティング関連のイメージ -->
+                            <div class="service-mockup service-mockup-single">
+                                <div class="mockup-desktop mockup-desktop-large">
+                                    <div class="mockup-screen">
+                                        <img src="4.png" alt="クリニックのマーケティング支援" class="mockup-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-text">
+                        <h3>クリニックのマーケティング支援</h3>
+                        <p>自由診療領域の制約を踏まえながら、集患〜申込〜継続の導線を設計。広告運用・クリエイティブ改善・LP改善を一体で支援します。</p>
+                        <ul class="service-features">
+                            <li>広告運用（検索/ディスプレイ等）</li>
+                            <li>LP / 購入体験の改善</li>
+                            <li>継続率を前提にしたKPI設計</li>
+                        </ul>
+                    </div>
+                    <div class="service-image service-image-pc">
+                        <div class="service-image-placeholder">
+                            <!-- マーケティング関連のイメージ -->
+                            <div class="service-mockup service-mockup-single">
+                                <div class="mockup-desktop mockup-desktop-large">
+                                    <div class="mockup-screen">
+                                        <img src="4.png" alt="クリニックのマーケティング支援" class="mockup-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- サービス3: 画像左、テキスト右 -->
+                <div class="service-item service-item-left">
+                    <div class="service-image">
+                        <div class="service-image-placeholder">
+                            <!-- システム開発関連のイメージ -->
+                            <div class="service-mockup service-mockup-single">
+                                <div class="mockup-desktop mockup-desktop-large">
+                                    <div class="mockup-screen">
+                                        <img src="5.png" alt="システム・アプリ企画／開発／運用" class="mockup-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-text">
+                        <h3>システム・アプリ企画／開発／運用</h3>
+                        <p>クリニック運用に必要な業務設計を、システムで再現できる形に落とし込みます。導入後の運用まで見据え、現場で回る仕組みをつくります。</p>
+                        <ul class="service-features">
+                            <li>要件定義・仕様設計</li>
+                            <li>開発ディレクション／運用設計</li>
+                            <li>外部ツール連携（EC/CRM等）</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ニュースセクション -->
+    <section id="news" class="section section-news">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title-en">NEWS</h2>
+                <p class="section-subtitle">お知らせ</p>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <span class="news-tag">ニュース</span>
+                    <div class="news-image">
+                        <img src="6.jpg" alt="新規提携クリニックのご紹介" class="news-image-content">
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">新規提携クリニックのご紹介</h3>
+                        <p class="news-excerpt">美章会 リッツ美容外科大阪院との提携を開始いたしました。</p>
+                        <div class="news-meta">
+                            <span class="news-date">2024.11.15</span>
+                            <span class="news-category">サービス</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <span class="news-tag">ニュース</span>
+                    <div class="news-content">
+                        <h3 class="news-title">支援クリニック数100院突破</h3>
+                        <p class="news-excerpt">この度、日本ブギウギメディカル株式会社が支援するクリニック様が、100院を突破いたしました</p>
+                        <div class="news-meta">
+                            <span class="news-date">2025.10.16</span>
+                            <span class="news-category">会社</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="news-footer">
+                <a href="#news" class="btn-circle">
+                    <span>お知らせ一覧</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 採用セクション -->
+    <section id="recruit" class="section section-recruit">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title-en">RECRUIT</h2>
+                <p class="section-subtitle">採用情報</p>
+            </div>
+            <div class="section-content">
+                <div class="recruit-intro">
+                    <div class="recruit-photos recruit-photos-sp">
+                        <div class="photo-card">
+                            <img src="saiyou1.png" alt="採用写真1" class="photo-image">
+                        </div>
+                        <div class="photo-card">
+                            <img src="saiyou2.png" alt="採用写真2" class="photo-image">
+                        </div>
+                    </div>
+                    <h3 class="recruit-title">少数精鋭で、<br>医療体験のスタンダードを変える。</h3>
+                    <p class="recruit-description">日本ブギウギメディカルは、オンライン診療の体験設計・運用・データ基盤までを一気通貫でつくるチームです。<br>医療のスタンダードを変えるために、オフラインからオンライン、マーケから開発までなんでもやる。本質を追求し、最短最速で達成する組織です。</p>
+                    <p class="recruit-note">※採用は状況により変動します。ご関心がある方はお問い合わせよりご連絡ください。</p>
+                    <a href="#contact" class="btn-circle">
+                        <span>会社採用情報</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="recruit-visual">
+                    <div class="recruit-photos recruit-photos-pc">
+                        <div class="photo-card">
+                            <img src="saiyou1.png" alt="採用写真1" class="photo-image">
+                        </div>
+                        <div class="photo-card">
+                            <img src="saiyou2.png" alt="採用写真2" class="photo-image">
+                        </div>
+                    </div>
+                    <div class="recruit-link">
+                        <a href="#contact" class="btn-circle">
+                            <span>エンジニア/デザイナー採用</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="jobs-grid">
+                <div class="job-card">
+                    <h4>プロダクト／オペレーション</h4>
+                    <p class="job-type">正社員</p>
+                    <p>オンライン診療プラットフォームの体験設計や運用改善に携わります。患者さんの不安を減らす導線設計と、現場で回る仕組みづくりを両立します。</p>
+                    <a href="#contact" class="job-link">詳細を見る →</a>
+                </div>
+                <div class="job-card">
+                    <h4>広告運用・クリエイティブ</h4>
+                    <p class="job-type">正社員</p>
+                    <p>クリニックの集患支援として、広告運用やLP改善を担当します。継続率を前提にしたKPI設計と、自由診療領域の制約を踏まえた運用を行います。</p>
+                    <a href="#contact" class="job-link">詳細を見る →</a>
+                </div>
+                <div class="job-card">
+                    <h4>エンジニアリング（連携・自動化）</h4>
+                    <p class="job-type">正社員</p>
+                    <p>クリニック運用に必要なシステム開発や、外部ツール連携を担当します。要件定義から運用設計まで、現場で回る仕組みをつくります。</p>
+                    <a href="#contact" class="job-link">詳細を見る →</a>
+                </div>
+                <div class="job-card">
+                    <h4>カスタマーサクセス（クリニック支援）</h4>
+                    <p class="job-type">正社員</p>
+                    <p>提携クリニックのサポートを行い、サービスの価値を最大化します。運用負荷を下げ、継続的な改善を支援します。</p>
+                    <a href="#contact" class="job-link">詳細を見る →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お問い合わせセクション -->
+    <section id="contact" class="section section-contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title-en">CONTACT</h2>
+                <p class="section-subtitle">お問い合わせ</p>
+            </div>
+            <div class="section-content">
+                <div class="contact-intro">
+                    <p class="contact-description">提携のご相談／運用・開発のご相談など、お気軽にご連絡ください。</p>
+                    <a href="#contact-form" class="btn-circle">
+                        <span>お問い合わせ</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="contact-visual">
+                    <div class="contact-illustration">
+                        <!-- 等角イラストのプレースホルダー -->
+                        <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- ヘルプデスク -->
+                            <rect x="50" y="100" width="150" height="100" rx="8" fill="#F3F4F6"/>
+                            <circle cx="125" cy="140" r="20" fill="#FEE2E2"/>
+                            <rect x="105" y="165" width="40" height="30" rx="4" fill="#FEE2E2"/>
+                            
+                            <!-- 電話 -->
+                            <rect x="250" y="150" width="80" height="50" rx="8" fill="#E5E7EB"/>
+                            <circle cx="290" cy="175" r="15" fill="#E85C5C"/>
+                            
+                            <!-- メール -->
+                            <rect x="350" y="120" width="100" height="70" rx="8" fill="#F3F4F6"/>
+                            <rect x="360" y="130" width="80" height="5" rx="2" fill="#D1D5DB"/>
+                            <rect x="360" y="140" width="60" height="5" rx="2" fill="#D1D5DB"/>
+                            <rect x="360" y="150" width="70" height="5" rx="2" fill="#D1D5DB"/>
+                            
+                            <!-- 接続線 -->
+                            <line x1="200" y1="150" x2="250" y2="175" stroke="#E85C5C" stroke-width="2" stroke-dasharray="4 4"/>
+                            <line x1="330" y1="200" x2="350" y2="155" stroke="#E85C5C" stroke-width="2" stroke-dasharray="4 4"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-info-section" id="contact-form">
+                <div class="company-info-card">
+                    <h3>会社情報</h3>
+                    <dl class="info-list">
+                        <dt>社名</dt>
+                        <dd>日本ブギウギメディカル株式会社</dd>
+                        <dt>代表取締役社長</dt>
+                        <dd>関 勇輝</dd>
+                        <dt>従業員</dt>
+                        <dd>27人（外部パートナー含む）</dd>
+                        <dt>取引銀行</dt>
+                        <dd>三井住友銀行</dd>
+                        <dt>専属顧問</dt>
+                        <dd>顧問税理士 大北税理士事務所 大北 孝</dd>
+                        <dt>主要取引先</dt>
+                        <dd>美章会 リッツ美容外科大阪院</dd>
+                        <dt>所在地</dt>
+                        <dd>〒531-0071 大阪府大阪市北区中津1-2-21 明大ビル 405</dd>
+                        <dt>メール</dt>
+                        <dd>cs@bw-med.clinic</dd>
+                    </dl>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">お名前</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">メールアドレス</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">件名</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">メッセージ</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">送信する</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-mark">W</span>
+                    <span class="logo-text">日本ブギウギメディカル</span>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#services">Service</a></li>
+                            <li><a href="#recruit">Recruit</a></li>
+                            <li><a href="#news">News</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Recruit</h4>
+                        <ul>
+                            <li><a href="#contact">エンジニア/デザイナー採用</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <p class="company-name">日本ブギウギメディカル株式会社</p>
+                    <p class="company-address">〒531-0071 大阪府大阪市北区中津1-2-21 明大ビル 405</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 日本ブギウギメディカル株式会社 All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
