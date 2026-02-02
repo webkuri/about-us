@@ -412,7 +412,37 @@ if (statsSection) {
         }
     }
 
-    // PC用：セクションが画面に入ったらスクロール固定
+    // スクロール監視用のリスナー変数
+    let scrollCheckListener = null;
+
+    // ロック発動判定を行う関数（scrollイベントで実行）
+    function checkLockTrigger() {
+        if (isActive || animationComplete || checkIsMobile()) return;
+
+        const rect = aboutSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        // 理想的な配置位置（画面の上下中央）
+        const idealTop = (windowHeight - rect.height) / 2;
+
+        // 現在位置と理想位置の差分
+        const diff = rect.top - idealTop;
+
+        // 理想位置の前後100px以内に入ったら強制的にロック動作へ移行
+        // ただし、通り過ぎてしまわないように、スクロール方向も考慮できるとベストだが
+        // ここでは単純に範囲に入ったら吸い寄せる
+        if (Math.abs(diff) < 100) {
+            console.log('[About] Triggering lock at distance:', diff);
+            lockScroll();
+            // ロックしたので監視解除
+            if (scrollCheckListener) {
+                window.removeEventListener('scroll', scrollCheckListener);
+                scrollCheckListener = null;
+            }
+        }
+    }
+
+    // PC用：セクションが画面に近づいたら監視を開始
     const aboutSectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (checkIsMobile()) {
@@ -420,33 +450,23 @@ if (statsSection) {
                 return;
             }
 
-            // PCでセクションが画面内に収まるか、適切な位置に来たらスクロール固定
             if (entry.isIntersecting && !isActive && !animationComplete) {
-                const rect = aboutSection.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-
-                // 条件1: 完全に画面内に入っている
-                const isFullyVisible = rect.top >= 0 && rect.bottom <= windowHeight;
-
-                // 条件2: 要素の中心が画面中心に近い（±150px以内）
-                // 画面サイズ等の理由で完全に入らない場合でもこれで発火させる
-                const elementCenter = rect.top + (rect.height / 2);
-                const windowCenter = windowHeight / 2;
-                const isCentered = Math.abs(elementCenter - windowCenter) < 150;
-
-                // 条件3: 画面より要素が大きい場合、上端が画面上部に入り込んでいる
-                const isTallerThanWindow = rect.height > windowHeight;
-                const topVisible = rect.top > 0 && rect.top < windowHeight * 0.3;
-
-                if (isFullyVisible || isCentered || (isTallerThanWindow && topVisible)) {
-                    lockScroll();
-                    setTimeout(() => {
-                        showStep1();
-                    }, 300);
+                // 画面に入ってきたら、厳密な位置監視を開始
+                if (!scrollCheckListener) {
+                    scrollCheckListener = checkLockTrigger;
+                    window.addEventListener('scroll', scrollCheckListener, { passive: true });
+                    // 初回チェック
+                    checkLockTrigger();
+                }
+            } else {
+                // 画面外に出たら監視を解除（無駄な処理を省く）
+                if (scrollCheckListener) {
+                    window.removeEventListener('scroll', scrollCheckListener);
+                    scrollCheckListener = null;
                 }
             }
         });
-    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], rootMargin: '0px' });
+    }, { rootMargin: '20% 0px' }); // 画面に入る少し前から監視有効化
 
     aboutSectionObserver.observe(aboutSection);
 
