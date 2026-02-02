@@ -21,13 +21,13 @@ if (hamburger && navMenu) {
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     const scrollTop = document.getElementById('scrollTop');
-    
+
     if (window.scrollY > 50) {
         navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
     } else {
         navbar.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
     }
-    
+
     // スクロールトップボタンの表示/非表示
     if (scrollTop) {
         if (window.scrollY > 300) {
@@ -47,7 +47,7 @@ if (scrollTopBtn) {
             behavior: 'smooth'
         });
     });
-    
+
     // 初期状態は非表示
     scrollTopBtn.classList.add('hidden');
 }
@@ -57,7 +57,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
         if (href === '#') return;
-        
+
         e.preventDefault();
         const target = document.querySelector(href);
         if (target) {
@@ -67,7 +67,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 top: offsetTop,
                 behavior: 'smooth'
             });
-            
+
             // モバイルメニューを閉じる
             const navMenu = document.querySelector('.nav-menu');
             const hamburger = document.querySelector('.hamburger');
@@ -110,13 +110,13 @@ const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         // ここで実際のフォーム送信処理を実装
         // 例: APIへの送信、メール送信など
-        
+
         // デモ用のアラート
         alert('お問い合わせありがとうございます。\n担当者より折り返しご連絡いたします。');
-        
+
         // フォームをリセット
         contactForm.reset();
     });
@@ -126,7 +126,7 @@ if (contactForm) {
 const animateCounter = (element, target, duration = 2000) => {
     let start = 0;
     const increment = target / (duration / 16);
-    
+
     const updateCounter = () => {
         start += increment;
         if (start < target) {
@@ -149,7 +149,7 @@ const animateCounter = (element, target, duration = 2000) => {
             }
         }
     };
-    
+
     updateCounter();
 };
 
@@ -161,7 +161,7 @@ const statsObserver = new IntersectionObserver((entries) => {
             statNumbers.forEach(stat => {
                 const text = stat.textContent;
                 let target = 0;
-                
+
                 if (text.includes('万')) {
                     target = parseInt(text.replace('万+', '')) * 10000;
                 } else if (text.includes('+')) {
@@ -169,7 +169,7 @@ const statsObserver = new IntersectionObserver((entries) => {
                 } else {
                     target = parseInt(text);
                 }
-                
+
                 if (!isNaN(target) && target > 0) {
                     animateCounter(stat, target);
                 }
@@ -185,7 +185,7 @@ if (statsSection) {
 }
 
 // Aboutセクションのスクロール連動演出
-(function() {
+(function () {
     const aboutSection = document.getElementById('aboutScrollSection');
     if (!aboutSection) return;
 
@@ -193,7 +193,7 @@ if (statsSection) {
     function checkIsMobile() {
         return window.innerWidth <= 768;
     }
-    
+
     let isActive = false;
     let scrollProgress = 0;
     let lockedScrollPosition = 0;
@@ -225,23 +225,23 @@ if (statsSection) {
     function unlockScroll() {
         if (!isActive) return;
         isActive = false;
-        
+
         const savedScrollPosition = lockedScrollPosition;
         // デバッグ用ログ（本番では削除可）
         console.log('[About] Unlocking scroll, saved position:', savedScrollPosition);
-        
+
         // scroll-behavior: smoothを一時的に無効化
         const htmlElement = document.documentElement;
         const originalScrollBehavior = htmlElement.style.scrollBehavior;
         htmlElement.style.scrollBehavior = 'auto';
-        
+
         // 同一フレーム内で固定解除とスクロール復元を連続実行
         document.body.classList.remove('scroll-locked');
         document.body.style.top = '';
-        
+
         // スクロール位置を即座に復元（同一フレーム内）
         window.scrollTo(0, savedScrollPosition);
-        
+
         // scroll-behaviorを元に戻す（次のフレームで）
         requestAnimationFrame(() => {
             htmlElement.style.scrollBehavior = originalScrollBehavior || '';
@@ -284,13 +284,13 @@ if (statsSection) {
     // ステップ3: ハイライト①（親要素と同時に表示されるため、即座に完了）
     function showStep3() {
         const highlight1Elements = Array.from(aboutSection.querySelectorAll('.highlight-text.highlight-target-1'));
-        
+
         if (highlight1Elements.length === 0) {
             console.warn('[About] highlight-target-1 not found. Check HTML wrapper classes.');
             stepStates[3] = true;
             return;
         }
-        
+
         // 親要素が表示されているハイライトを自動的にアクティブにする
         highlight1Elements.forEach(highlight => {
             const parent = highlight.closest('[data-step]');
@@ -298,7 +298,7 @@ if (statsSection) {
                 highlight.classList.add('highlight-active');
             }
         });
-        
+
         stepStates[3] = true;
     }
 
@@ -321,7 +321,7 @@ if (statsSection) {
     // ステップ5: ハイライト②（親要素と同時に表示されるため、即座に完了）
     function showStep5() {
         const highlight2Elements = Array.from(aboutSection.querySelectorAll('.highlight-text.highlight-target-2'));
-        
+
         if (highlight2Elements.length === 0) {
             console.warn('[About] highlight-target-2 not found. Check HTML wrapper classes.');
             stepStates[5] = true;
@@ -330,7 +330,7 @@ if (statsSection) {
             }, 1000);
             return;
         }
-        
+
         // 親要素が表示されているハイライトを自動的にアクティブにする
         highlight2Elements.forEach(highlight => {
             const parent = highlight.closest('[data-step]');
@@ -338,7 +338,7 @@ if (statsSection) {
                 highlight.classList.add('highlight-active');
             }
         });
-        
+
         stepStates[5] = true;
         // すべて完了したらスクロール固定を解除
         setTimeout(() => {
@@ -365,20 +365,20 @@ if (statsSection) {
             }
         }
 
-        // ステップ3: 50-70%
-        if (scrollProgress >= 60 && !stepStates[3] && stepStates[2]) {
+        // ステップ3: 35-50%
+        if (scrollProgress >= 40 && !stepStates[3] && stepStates[2]) {
             if (highlightIndex === 0) {
                 showStep3();
             }
         }
 
-        // ステップ4: 70-85%
-        if (scrollProgress >= 75 && !stepStates[4] && stepStates[3]) {
+        // ステップ4: 50-65%
+        if (scrollProgress >= 50 && !stepStates[4] && stepStates[3]) {
             showStep4();
         }
 
-        // ステップ5: 85-100%
-        if (scrollProgress >= 90 && !stepStates[5] && stepStates[4]) {
+        // ステップ5: 65-80%
+        if (scrollProgress >= 65 && !stepStates[5] && stepStates[4]) {
             showStep5();
         }
     }
@@ -389,12 +389,12 @@ if (statsSection) {
         const windowHeight = window.innerHeight;
         const sectionTop = rect.top;
         const sectionHeight = rect.height;
-        
+
         // セクションが画面に入ったらアニメーション開始
         if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
             const scrollRatio = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight + sectionHeight)));
             const progress = scrollRatio * 100;
-            
+
             // スクロール進行に応じてステップを表示
             if (progress >= 5 && !stepStates[1]) {
                 showStep1();
@@ -404,15 +404,15 @@ if (statsSection) {
                     showStep2();
                 }
             }
-            if (progress >= 60 && !stepStates[3] && stepStates[2]) {
+            if (progress >= 40 && !stepStates[3] && stepStates[2]) {
                 if (highlightIndex === 0) {
                     showStep3();
                 }
             }
-            if (progress >= 75 && !stepStates[4] && stepStates[3]) {
+            if (progress >= 50 && !stepStates[4] && stepStates[3]) {
                 showStep4();
             }
-            if (progress >= 90 && !stepStates[5] && stepStates[4]) {
+            if (progress >= 65 && !stepStates[5] && stepStates[4]) {
                 showStep5();
             }
         }
