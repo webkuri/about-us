@@ -213,12 +213,38 @@ if (statsSection) {
     // スクロール固定（PCのみ）
     function lockScroll() {
         if (isActive || checkIsMobile() || animationComplete) return;
-        isActive = true;
-        lockedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        console.log('[About] Locking scroll, position:', lockedScrollPosition);
-        document.body.classList.add('scroll-locked');
-        document.body.style.top = `-${lockedScrollPosition}px`;
-        scrollProgress = 0;
+
+        // セクションが画面中央に来る位置を計算
+        const rect = aboutSection.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const targetScrollTop = scrollTop + rect.top - (window.innerHeight - rect.height) / 2;
+
+        // アニメーションのために位置調整が必要ならスクロール
+        if (Math.abs(scrollTop - targetScrollTop) > 5) {
+            window.scrollTo({
+                top: targetScrollTop,
+                behavior: 'smooth'
+            });
+
+            // スクロール完了を待ってからロックするためのタイムアウト
+            // smoothスクロールの完了を検知するのは難しいので、少し待機
+            isActive = true; // 重複実行防止のために先にフラグを立てる
+            setTimeout(() => {
+                lockedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                console.log('[About] Locking scroll at optimized position:', lockedScrollPosition);
+                document.body.classList.add('scroll-locked');
+                document.body.style.top = `-${lockedScrollPosition}px`;
+                scrollProgress = 0;
+            }, 500);
+        } else {
+            // 既にいい位置にいる場合
+            isActive = true;
+            lockedScrollPosition = scrollTop;
+            console.log('[About] Locking scroll, position:', lockedScrollPosition);
+            document.body.classList.add('scroll-locked');
+            document.body.style.top = `-${lockedScrollPosition}px`;
+            scrollProgress = 0;
+        }
     }
 
     // スクロール固定解除
