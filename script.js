@@ -189,8 +189,10 @@ if (statsSection) {
     const aboutSection = document.getElementById('aboutScrollSection');
     if (!aboutSection) return;
 
-    // スマホ判定（768px以下）
-    const isMobile = window.innerWidth <= 768;
+    // スマホ判定（768px以下）- 動的に判定する関数に変更
+    function checkIsMobile() {
+        return window.innerWidth <= 768;
+    }
     
     let isActive = false;
     let scrollProgress = 0;
@@ -206,6 +208,7 @@ if (statsSection) {
     let currentParagraphIndex = 0;
     const paragraphs = Array.from(aboutSection.querySelectorAll('[data-step="2"]'));
     let highlightIndex = 0;
+    let scrollListenerAttached = false;
 
     // スクロール固定
     function lockScroll() {
@@ -380,97 +383,64 @@ if (statsSection) {
         }
     }
 
-    // スマホ用：通常のスクロールでアニメーションを実行
-    function handleMobileScroll() {
-        if (isMobile) {
-            const rect = aboutSection.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const sectionTop = rect.top;
-            const sectionHeight = rect.height;
+    // スマホ/PC共通：通常のスクロールでアニメーションを実行
+    function handleScrollAnimation() {
+        const rect = aboutSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const sectionTop = rect.top;
+        const sectionHeight = rect.height;
+        
+        // セクションが画面に入ったらアニメーション開始
+        if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
+            const scrollRatio = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight + sectionHeight)));
+            const progress = scrollRatio * 100;
             
-            // セクションが画面に入ったらアニメーション開始
-            if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
-                const scrollRatio = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight + sectionHeight)));
-                const progress = scrollRatio * 100;
-                
-                // スクロール進行に応じてステップを表示
-                if (progress >= 5 && !stepStates[1]) {
-                    showStep1();
+            // スクロール進行に応じてステップを表示
+            if (progress >= 5 && !stepStates[1]) {
+                showStep1();
+            }
+            if (progress >= 20 && !stepStates[2] && stepStates[1]) {
+                if (currentParagraphIndex === 0) {
+                    showStep2();
                 }
-                if (progress >= 20 && !stepStates[2] && stepStates[1]) {
-                    if (currentParagraphIndex === 0) {
-                        showStep2();
-                    }
+            }
+            if (progress >= 60 && !stepStates[3] && stepStates[2]) {
+                if (highlightIndex === 0) {
+                    showStep3();
                 }
-                if (progress >= 60 && !stepStates[3] && stepStates[2]) {
-                    if (highlightIndex === 0) {
-                        showStep3();
-                    }
-                }
-                if (progress >= 75 && !stepStates[4] && stepStates[3]) {
-                    showStep4();
-                }
-                if (progress >= 90 && !stepStates[5] && stepStates[4]) {
-                    showStep5();
-                }
+            }
+            if (progress >= 75 && !stepStates[4] && stepStates[3]) {
+                showStep4();
+            }
+            if (progress >= 90 && !stepStates[5] && stepStates[4]) {
+                showStep5();
             }
         }
     }
 
-    // セクション全体が画面に収まったらスクロール固定を開始（PCのみ）
+    // スクロールリスナーを設定
+    function attachScrollListener() {
+        if (!scrollListenerAttached) {
+            window.addEventListener('scroll', handleScrollAnimation, { passive: true });
+            scrollListenerAttached = true;
+            // 初期状態でもチェック
+            handleScrollAnimation();
+        }
+    }
+
+    // セクションが画面に入ったらアニメーション開始（PC/SP共通）
     const aboutSectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // スマホではスクロールジャックを無効化
-            if (isMobile) return;
-            
-            // セクション全体が画面内に入り、完全に表示されているか確認
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.95) {
-                if (!isActive && !stepStates[5]) {
-                    lockScroll();
-                    // エフェクト開始（少し遅延を入れる）
-                    setTimeout(() => {
-                        scrollProgress = 0;
-                        showStep1();
-                    }, 300);
-                }
+            // セクションが画面内に入ったらスクロールリスナーを有効化
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+                attachScrollListener();
             }
         });
-    }, { threshold: [0.95, 1.0], rootMargin: '0px' });
+    }, { threshold: [0.1, 0.3, 0.5], rootMargin: '0px' });
 
     aboutSectionObserver.observe(aboutSection);
 
-    // スマホ用：通常のスクロールイベント
-    if (isMobile) {
-        window.addEventListener('scroll', handleMobileScroll, { passive: true });
-        // 初期状態でもチェック
-        handleMobileScroll();
-    }
-
-    // スクロールイベント（仮想スクロール、PCのみ）
-    let lastScrollY = 0;
-    window.addEventListener('wheel', (e) => {
-        if (isMobile || !isActive) return;
-
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? 2 : -2;
-        updateScrollProgress(delta);
-        lastScrollY = window.pageYOffset;
-    }, { passive: false });
-
-    // タッチスクロール対応（PCのみ）
-    let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => {
-        if (isMobile || !isActive) return;
-        touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', (e) => {
-        if (isMobile || !isActive) return;
-        e.preventDefault();
-        const touchY = e.touches[0].clientY;
-        const delta = (touchStartY - touchY) * 0.5;
-        updateScrollProgress(delta);
-        touchStartY = touchY;
-    }, { passive: false });
+    // 初期状態でもスクロールリスナーを設定（ページ途中からのリロード対応）
+    attachScrollListener();
 })();
 
