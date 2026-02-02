@@ -189,7 +189,7 @@ if (statsSection) {
     const aboutSection = document.getElementById('aboutScrollSection');
     if (!aboutSection) return;
 
-    // スマホ判定（768px以下）- 動的に判定する関数に変更
+    // スマホ判定（768px以下）- 動的に判定する関数
     function checkIsMobile() {
         return window.innerWidth <= 768;
     }
@@ -197,7 +197,6 @@ if (statsSection) {
     let isActive = false;
     let scrollProgress = 0;
     let lockedScrollPosition = 0;
-    const steps = [1, 2, 3, 4, 5];
     const stepStates = {
         1: false, // タイトル表示
         2: false, // 段落表示（複数）
@@ -208,41 +207,38 @@ if (statsSection) {
     let currentParagraphIndex = 0;
     const paragraphs = Array.from(aboutSection.querySelectorAll('[data-step="2"]'));
     let highlightIndex = 0;
-    let scrollListenerAttached = false;
+    let mobileScrollListenerAttached = false;
+    let animationComplete = false;
 
-    // スクロール固定
+    // スクロール固定（PCのみ）
     function lockScroll() {
-        if (isActive) return;
+        if (isActive || checkIsMobile() || animationComplete) return;
         isActive = true;
         lockedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        // デバッグ用ログ（本番では削除可）
         console.log('[About] Locking scroll, position:', lockedScrollPosition);
         document.body.classList.add('scroll-locked');
         document.body.style.top = `-${lockedScrollPosition}px`;
+        scrollProgress = 0;
     }
 
     // スクロール固定解除
     function unlockScroll() {
         if (!isActive) return;
         isActive = false;
+        animationComplete = true;
 
         const savedScrollPosition = lockedScrollPosition;
-        // デバッグ用ログ（本番では削除可）
         console.log('[About] Unlocking scroll, saved position:', savedScrollPosition);
 
-        // scroll-behavior: smoothを一時的に無効化
         const htmlElement = document.documentElement;
         const originalScrollBehavior = htmlElement.style.scrollBehavior;
         htmlElement.style.scrollBehavior = 'auto';
 
-        // 同一フレーム内で固定解除とスクロール復元を連続実行
         document.body.classList.remove('scroll-locked');
         document.body.style.top = '';
 
-        // スクロール位置を即座に復元（同一フレーム内）
         window.scrollTo(0, savedScrollPosition);
 
-        // scroll-behaviorを元に戻す（次のフレームで）
         requestAnimationFrame(() => {
             htmlElement.style.scrollBehavior = originalScrollBehavior || '';
         });
@@ -263,42 +259,31 @@ if (statsSection) {
             const paragraph = paragraphs[currentParagraphIndex];
             if (paragraph && !paragraph.classList.contains('step-visible')) {
                 paragraph.classList.add('step-visible');
-                // 親要素が表示されたら、その中のハイライトも自動的にアクティブにする
                 const highlights = paragraph.querySelectorAll('.highlight-text.highlight-target-1');
                 highlights.forEach(highlight => {
                     highlight.classList.add('highlight-active');
                 });
                 currentParagraphIndex++;
-                // 次の段落表示まで少し待つ
                 setTimeout(() => {
                     if (currentParagraphIndex < paragraphs.length) {
                         showStep2();
                     } else {
                         stepStates[2] = true;
                     }
-                }, 800);
+                }, 600);
             }
         }
     }
 
-    // ステップ3: ハイライト①（親要素と同時に表示されるため、即座に完了）
+    // ステップ3: ハイライト①
     function showStep3() {
         const highlight1Elements = Array.from(aboutSection.querySelectorAll('.highlight-text.highlight-target-1'));
-
-        if (highlight1Elements.length === 0) {
-            console.warn('[About] highlight-target-1 not found. Check HTML wrapper classes.');
-            stepStates[3] = true;
-            return;
-        }
-
-        // 親要素が表示されているハイライトを自動的にアクティブにする
         highlight1Elements.forEach(highlight => {
             const parent = highlight.closest('[data-step]');
             if (parent && parent.classList.contains('step-visible')) {
                 highlight.classList.add('highlight-active');
             }
         });
-
         stepStates[3] = true;
     }
 
@@ -308,7 +293,6 @@ if (statsSection) {
         step4Elements.forEach(el => {
             if (!el.classList.contains('step-visible')) {
                 el.classList.add('step-visible');
-                // 親要素が表示されたら、その中のハイライトも自動的にアクティブにする
                 const highlights = el.querySelectorAll('.highlight-text.highlight-target-2');
                 highlights.forEach(highlight => {
                     highlight.classList.add('highlight-active');
@@ -318,84 +302,61 @@ if (statsSection) {
         stepStates[4] = true;
     }
 
-    // ステップ5: ハイライト②（親要素と同時に表示されるため、即座に完了）
+    // ステップ5: ハイライト②
     function showStep5() {
         const highlight2Elements = Array.from(aboutSection.querySelectorAll('.highlight-text.highlight-target-2'));
-
-        if (highlight2Elements.length === 0) {
-            console.warn('[About] highlight-target-2 not found. Check HTML wrapper classes.');
-            stepStates[5] = true;
-            setTimeout(() => {
-                unlockScroll();
-            }, 1000);
-            return;
-        }
-
-        // 親要素が表示されているハイライトを自動的にアクティブにする
         highlight2Elements.forEach(highlight => {
             const parent = highlight.closest('[data-step]');
             if (parent && parent.classList.contains('step-visible')) {
                 highlight.classList.add('highlight-active');
             }
         });
-
         stepStates[5] = true;
         // すべて完了したらスクロール固定を解除
         setTimeout(() => {
             unlockScroll();
-        }, 1000);
+        }, 800);
     }
 
-    // スクロール進行を管理
+    // PC用：スクロール進行を管理
     function updateScrollProgress(delta) {
         if (!isActive) return;
 
         scrollProgress += delta;
         scrollProgress = Math.max(0, Math.min(100, scrollProgress));
 
-        // ステップ1: 0-10%（既に表示済みの場合はスキップ）
         if (scrollProgress >= 5 && !stepStates[1]) {
             showStep1();
         }
-
-        // ステップ2: 10-50%
         if (scrollProgress >= 20 && !stepStates[2] && stepStates[1]) {
             if (currentParagraphIndex === 0) {
                 showStep2();
             }
         }
-
-        // ステップ3: 35-50%
         if (scrollProgress >= 40 && !stepStates[3] && stepStates[2]) {
-            if (highlightIndex === 0) {
-                showStep3();
-            }
+            showStep3();
         }
-
-        // ステップ4: 50-65%
         if (scrollProgress >= 50 && !stepStates[4] && stepStates[3]) {
             showStep4();
         }
-
-        // ステップ5: 65-80%
         if (scrollProgress >= 65 && !stepStates[5] && stepStates[4]) {
             showStep5();
         }
     }
 
-    // スマホ/PC共通：通常のスクロールでアニメーションを実行
-    function handleScrollAnimation() {
+    // スマホ用：通常のスクロールでアニメーションを実行
+    function handleMobileScroll() {
+        if (!checkIsMobile()) return;
+
         const rect = aboutSection.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         const sectionTop = rect.top;
         const sectionHeight = rect.height;
 
-        // セクションが画面に入ったらアニメーション開始
         if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
             const scrollRatio = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight + sectionHeight)));
             const progress = scrollRatio * 100;
 
-            // スクロール進行に応じてステップを表示
             if (progress >= 5 && !stepStates[1]) {
                 showStep1();
             }
@@ -405,9 +366,7 @@ if (statsSection) {
                 }
             }
             if (progress >= 40 && !stepStates[3] && stepStates[2]) {
-                if (highlightIndex === 0) {
-                    showStep3();
-                }
+                showStep3();
             }
             if (progress >= 50 && !stepStates[4] && stepStates[3]) {
                 showStep4();
@@ -418,29 +377,63 @@ if (statsSection) {
         }
     }
 
-    // スクロールリスナーを設定
-    function attachScrollListener() {
-        if (!scrollListenerAttached) {
-            window.addEventListener('scroll', handleScrollAnimation, { passive: true });
-            scrollListenerAttached = true;
-            // 初期状態でもチェック
-            handleScrollAnimation();
+    // スマホ用スクロールリスナーを設定
+    function attachMobileScrollListener() {
+        if (!mobileScrollListenerAttached && checkIsMobile()) {
+            window.addEventListener('scroll', handleMobileScroll, { passive: true });
+            mobileScrollListenerAttached = true;
+            handleMobileScroll();
         }
     }
 
-    // セクションが画面に入ったらアニメーション開始（PC/SP共通）
+    // PC用：セクションが画面に入ったらスクロール固定
     const aboutSectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // セクションが画面内に入ったらスクロールリスナーを有効化
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
-                attachScrollListener();
+            if (checkIsMobile()) {
+                attachMobileScrollListener();
+                return;
+            }
+
+            // PCでセクションが画面に入ったらスクロール固定
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                if (!isActive && !animationComplete) {
+                    lockScroll();
+                    setTimeout(() => {
+                        showStep1();
+                    }, 300);
+                }
             }
         });
-    }, { threshold: [0.1, 0.3, 0.5], rootMargin: '0px' });
+    }, { threshold: [0.3, 0.5, 0.7], rootMargin: '0px' });
 
     aboutSectionObserver.observe(aboutSection);
 
-    // 初期状態でもスクロールリスナーを設定（ページ途中からのリロード対応）
-    attachScrollListener();
-})();
+    // PC用：ホイールイベントでアニメーション進行
+    window.addEventListener('wheel', (e) => {
+        if (checkIsMobile() || !isActive) return;
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 3 : -3;
+        updateScrollProgress(delta);
+    }, { passive: false });
 
+    // PC用：タッチスクロール対応
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+        if (checkIsMobile() || !isActive) return;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (checkIsMobile() || !isActive) return;
+        e.preventDefault();
+        const touchY = e.touches[0].clientY;
+        const delta = (touchStartY - touchY) * 0.3;
+        updateScrollProgress(delta);
+        touchStartY = touchY;
+    }, { passive: false });
+
+    // 初期化：スマホの場合はスクロールリスナーを設定
+    if (checkIsMobile()) {
+        attachMobileScrollListener();
+    }
+})();
