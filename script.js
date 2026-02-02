@@ -420,14 +420,25 @@ if (statsSection) {
                 return;
             }
 
-            // PCでセクションが画面内に完全に収まったらスクロール固定
-            // 縦書きテキストの下端が画面内に入った位置でロック
+            // PCでセクションが画面内に収まるか、適切な位置に来たらスクロール固定
             if (entry.isIntersecting && !isActive && !animationComplete) {
                 const rect = aboutSection.getBoundingClientRect();
-                // セクションの下端が画面内に収まり、上端も見えている状態でロック
-                const bottomInView = rect.bottom <= window.innerHeight;
-                const topInView = rect.top >= 0;
-                if (bottomInView && topInView) {
+                const windowHeight = window.innerHeight;
+
+                // 条件1: 完全に画面内に入っている
+                const isFullyVisible = rect.top >= 0 && rect.bottom <= windowHeight;
+
+                // 条件2: 要素の中心が画面中心に近い（±150px以内）
+                // 画面サイズ等の理由で完全に入らない場合でもこれで発火させる
+                const elementCenter = rect.top + (rect.height / 2);
+                const windowCenter = windowHeight / 2;
+                const isCentered = Math.abs(elementCenter - windowCenter) < 150;
+
+                // 条件3: 画面より要素が大きい場合、上端が画面上部に入り込んでいる
+                const isTallerThanWindow = rect.height > windowHeight;
+                const topVisible = rect.top > 0 && rect.top < windowHeight * 0.3;
+
+                if (isFullyVisible || isCentered || (isTallerThanWindow && topVisible)) {
                     lockScroll();
                     setTimeout(() => {
                         showStep1();
@@ -435,7 +446,7 @@ if (statsSection) {
                 }
             }
         });
-    }, { threshold: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0], rootMargin: '0px' });
+    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], rootMargin: '0px' });
 
     aboutSectionObserver.observe(aboutSection);
 
