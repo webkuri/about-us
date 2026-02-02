@@ -366,11 +366,11 @@ body {
 
 /* セクション共通 */
 .section {
-    padding: 140px 0;
+    padding: 80px 0;
 }
 
 .section-header {
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 .section-title-en {
@@ -407,8 +407,8 @@ body {
     justify-content: center;
     align-items: flex-start;
     gap: 60px;
-    padding: 60px 0;
-    min-height: 600px;
+    padding: 40px 0;
+    min-height: 80vh;
     width: 100%;
     flex-wrap: nowrap;
 }

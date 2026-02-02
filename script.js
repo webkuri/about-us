@@ -394,9 +394,14 @@ if (statsSection) {
                 return;
             }
 
-            // PCでセクションが画面に入ったらスクロール固定
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-                if (!isActive && !animationComplete) {
+            // PCでセクションが画面内に完全に収まったらスクロール固定
+            // 縦書きテキストの下端が画面内に入った位置でロック
+            if (entry.isIntersecting && !isActive && !animationComplete) {
+                const rect = aboutSection.getBoundingClientRect();
+                // セクションの下端が画面内に収まり、上端も見えている状態でロック
+                const bottomInView = rect.bottom <= window.innerHeight;
+                const topInView = rect.top >= 0;
+                if (bottomInView && topInView) {
                     lockScroll();
                     setTimeout(() => {
                         showStep1();
@@ -404,7 +409,7 @@ if (statsSection) {
                 }
             }
         });
-    }, { threshold: [0.3, 0.5, 0.7], rootMargin: '0px' });
+    }, { threshold: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0], rootMargin: '0px' });
 
     aboutSectionObserver.observe(aboutSection);
 
